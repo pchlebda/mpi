@@ -9,39 +9,82 @@
     <script src="lib/angular.min.js"></script>
     <script src="js/dtm.js"></script>
     <script src="js/app.js"></script>
+    <script src="lib/jquery-2.1.4.min.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap-theme.min.css">
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
 <body ng-app="myApp">
 
-<div ng-controller="MainController">
-    <h1>Maszyna Turing</h1>
+<div ng-controller="MainController" class="container">
+    <div class="row">
+        <h1 class="col-md-4 col-md-offset-4">Maszyna Turinga</h1>
+    </div>
 
     <!--Inicjalizacja -->
     <div ng-show="step === 0">
-        <form name="initForm">
-            Zbiór stanów:<br>
-            <input ng-model="machine.states" ng-change="stateListener(machine.states)" type="text" required
-                   pattern="(([A-Za-z0-9])+,{0,1}\s{0,1})+" title="Stany oddzielone przecinkiem"/><br>
+        <form name="initForm" class="form-horizontal" role="form">
 
-            Alfabet wejściowy:<br>
-            <input ng-model="machine.inputAlphabet" type="text" required
-                   pattern="(([A-Za-z0-9])+,{0,1}\s{0,1})+" title="Kolejne znaki alfabetu oddzielone przecinkiem"/><br>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-md-offset-2">Zbiór stanów:</label>
 
-            Alfabet taśmy:<br>
-            <input ng-model="machine.tapeAlphabet" type="text"/><br>
+                <div class="col-md-4">
+                    <input ng-model="machine.states"
+                           ng-change="stateListener(machine.states)" required
+                           pattern="(([A-Za-z0-9])+,{0,1}\s{0,1})+" title="Stany oddzielone przecinkiem"
+                           type="text" class="form-control" placeholder="Podaj stany oddzielone przecinkami"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-md-offset-2">Alfabet wejściowy:</label>
 
-            Stan początkowy:<br>
-            <select ng-model="machine.initState" required title="Stan początkowy wymagany">
-                <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
-            </select><br>
+                <div class="col-md-4">
+                    <input ng-model="machine.inputAlphabet" required
+                           pattern="(([A-Za-z0-9])+,{0,1}\s{0,1})+"
+                           title="Kolejne znaki alfabetu oddzielone przecinkiem"
+                           type="text" class="form-control"
+                           placeholder="Podaj alfabet wejściowy oddzielony przecinakami"/>
+                </div>
+            </div>
 
-            Stany końcowe:<br>
-            <select ng-model="machine.finiteStates" multiple="true" required>
-                <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
-            </select><br>
-            <br><br>
+            <div class="form-group">
+                <label class="control-label col-md-2 col-md-offset-2">Alfabet taśmy:</label>
 
-            <button ng-click="createTuringMachine(initForm, machine)">Start</button>
+                <div class="col-md-4">
+                    <input ng-model="machine.tapeAlphabet" type="text" class="form-control"
+                           title="Kolejne znaki alfabetu taśmy oddzielone przecinkiem"
+                           placeholder="Podaj alfabet taśmy oddzielony przecinakami"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2 col-md-offset-2">Stan początkowy:</label>
+
+                <div class="col-md-4">
+                    <select ng-model="machine.initState" required title="Stan początkowy wymagany" class="form-control">
+                        <option ng-repeat=" state in states track by $index" value="{{state}}">{{state}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2 col-md-offset-2">Stany końcowe:</label>
+
+                <div class="col-md-4">
+                    <select ng-model="machine.finiteStates" multiple="true" required title="Zbiór stanów końcowych"
+                            class="form-control">
+                        <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-default col-md-2 col-md-offset-5"
+                        ng-click="createTuringMachine(initForm, machine)">Start
+                </button>
+            </div>
         </form>
 
     </div>
