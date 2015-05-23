@@ -9,27 +9,30 @@ angular.module('myApp', []).
         var machineDef;
         var dtmInstance;
 
-        $scope.stateListener = function(states) {
-            $scope.states = states.split(/\s*,\s*/);
+        $scope.stateListener = function (states) {
+            if (states != undefined) {
+                $scope.states = states.split(/\s*,\s*/);
+            }
         };
 
-        $scope.createTuringMachine = function (machine) {
-            machine.states = machine.states.split(/\s*,\s*/);
-            machine.inputAlphabet = machine.inputAlphabet.split(/\s*,\s*/);
-            if (machine.tapeAlphabet != undefined) {
-                machine.tapeAlphabet = machine.tapeAlphabet.split(/\s*,\s*/);
-                machine.tapeAlphabet = machine.inputAlphabet.concat(machine.tapeAlphabet);
-            } else {
-                machine.tapeAlphabet = machine.inputAlphabet;
+        $scope.createTuringMachine = function (form, machine) {
+            if (form.$valid) {
+                machine.states = machine.states.split(/\s*,\s*/);
+                machine.inputAlphabet = machine.inputAlphabet.split(/\s*,\s*/);
+                if (machine.tapeAlphabet != undefined) {
+                    machine.tapeAlphabet = machine.tapeAlphabet.split(/\s*,\s*/);
+                    machine.tapeAlphabet = machine.inputAlphabet.concat(machine.tapeAlphabet);
+                } else {
+                    machine.tapeAlphabet = machine.inputAlphabet;
+                }
+
+                machineDef = machine;
+                machineDef.transitions = [];
+
+                $scope.step = 1;
+                machine.moves = ['L', 'R', '_'];
+                $scope.machine = machine;
             }
-
-            machineDef = machine;
-            machineDef.transitions = [];
-
-            $scope.step = 1;
-            machine.moves = ['L', 'R', '_'];
-            $scope.machine = machine;
-
         };
 
         $scope.addTransition = function (transition) {

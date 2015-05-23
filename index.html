@@ -18,30 +18,30 @@
 
     <!--Inicjalizacja -->
     <div ng-show="step === 0">
-        <form>
+        <form name="initForm">
             Zbiór stanów:<br>
-            <input ng-model="machine.states" ng-change="stateListener(machine.states)" type="text"/><br>
+            <input ng-model="machine.states" ng-change="stateListener(machine.states)" type="text" required
+                   pattern="(([A-Za-z0-9])+,{0,1}\s{0,1})+" title="Stany oddzielone przecinkiem"/><br>
 
             Alfabet wejściowy:<br>
-            <input ng-model="machine.inputAlphabet" type="text"/><br>
+            <input ng-model="machine.inputAlphabet" type="text" required
+                   pattern="(([A-Za-z0-9])+,{0,1}\s{0,1})+" title="Kolejne znaki alfabetu oddzielone przecinkiem"/><br>
 
             Alfabet taśmy:<br>
             <input ng-model="machine.tapeAlphabet" type="text"/><br>
 
             Stan początkowy:<br>
-            <!--<input ng-model="machine.initState" type="text"/><br>-->
-            <select ng-model="machine.initState">
+            <select ng-model="machine.initState" required title="Stan początkowy wymagany">
                 <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
             </select><br>
 
             Stany końcowe:<br>
-            <!--<input ng-model="machine.finiteStates" type="text"/>-->
-            <select ng-model="machine.finiteStates" multiple="true">
+            <select ng-model="machine.finiteStates" multiple="true" required>
                 <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
             </select><br>
             <br><br>
 
-            <button ng-click="createTuringMachine(machine)">Start</button>
+            <button ng-click="createTuringMachine(initForm, machine)">Start</button>
         </form>
 
     </div>
@@ -53,7 +53,7 @@
         <form>
             Aktualny stan:
             <select ng-model="transition.condState">
-                <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
+                <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
             </select>
 
             Wczytywany symbol:
@@ -63,7 +63,7 @@
 
             Nowy stan:
             <select ng-model="transition.actionState">
-                <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
+                <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
             </select>
 
             Wpisywany symbol:

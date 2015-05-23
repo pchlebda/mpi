@@ -21,8 +21,8 @@
  */
 function DeterministicTuringMachine(parameters, tapeLength, inputWord) {
 
-    // TODO transition functions validation
     var transitions = parameters.transitions;
+    var finiteStates = parameters.finiteStates;
     var blank = '_';
     var currentState = parameters.initState;
     var tape = new Array(tapeLength);
@@ -80,17 +80,30 @@ function DeterministicTuringMachine(parameters, tapeLength, inputWord) {
         }
     }());
 
-    // TODO checking finish states
     return {
         getTape: function () {
             return tape;
         },
 
+        getCurrentState: function () {
+            return currentState;
+        },
+
         nextStep: function () {
             var action = getAction({state: currentState, symbol: read()});
+            if (action == null) {
+                throw new Error("Not defined transition");
+            }
             write(action.symbol);
             move(action.move);
             setCurrentState(action.state);
+        },
+
+        isInFinishState: function () {
+            if (finiteStates.indexOf(currentState) != -1) {
+                return true;
+            }
+            return false;
         }
     };
 
