@@ -18,32 +18,80 @@
 
     <!--Inicjalizacja -->
     <div ng-show="step === 0">
-    <form>
-        Zbiór stanów:<br>
-        <input ng-model="machine.states" type="text"/><br>
+        <form>
+            Zbiór stanów:<br>
+            <input ng-model="machine.states" ng-change="stateListener(machine.states)" type="text"/><br>
 
-        Alfabet wejściowy:<br>
-        <input ng-model="machine.inputAlphabet" type="text"/><br>
+            Alfabet wejściowy:<br>
+            <input ng-model="machine.inputAlphabet" type="text"/><br>
 
-        Alfabet taśmy:<br>
-        <input ng-model="machine.tapeAlphabet" type="text"/><br>
+            Alfabet taśmy:<br>
+            <input ng-model="machine.tapeAlphabet" type="text"/><br>
 
-        Stan początkowy:<br>
-        <input ng-model="machine.initState" type="text"/><br>
+            Stan początkowy:<br>
+            <!--<input ng-model="machine.initState" type="text"/><br>-->
+            <select ng-model="machine.initState">
+                <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
+            </select><br>
 
-         Stany końcowe:<br>
-        <input ng-model="machine.finiteStates" type="text"/><br><br>
+            Stany końcowe:<br>
+            <!--<input ng-model="machine.finiteStates" type="text"/>-->
+            <select ng-model="machine.finiteStates" multiple="true">
+                <option ng-repeat="state in states track by $index" value="{{state}}">{{state}}</option>
+            </select><br>
+            <br><br>
 
-        <button ng-click="createTuringMachine(machine)">Start</button>
-    </form>
+            <button ng-click="createTuringMachine(machine)">Start</button>
+        </form>
 
     </div>
 
 
-    <!--Animacja -->
     <div ng-show="step === 1">
-        <h1>Animacja</h1>
+        <h1>Dodaj funkcję przejścia:</h1><br>
 
+        <form>
+            Aktualny stan:
+            <select ng-model="transition.condState">
+                <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
+            </select>
+
+            Wczytywany symbol:
+            <select ng-model="transition.condSymbol">
+                <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
+            </select><br><br>
+
+            Nowy stan:
+            <select ng-model="transition.actionState">
+                <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
+            </select>
+
+            Wpisywany symbol:
+            <select ng-model="transition.actionSymbol">
+                <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
+            </select>
+
+            Ruch:
+            <select ng-model="transition.actionMove">
+                <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
+            </select>
+
+            <br><br>
+            <button ng-click="addTransition(transition)">Dodaj stan</button>
+            <button ng-click="createDtm()">Utwórz maszynę</button>
+        </form>
+    </div>
+
+    <div ng-show="step === 2">
+        <form>
+            Słowo wejściowe:<br>
+            <input ng-model="inputWord" type="text"/><br>
+            <button ng-click="runDtm()">Utwórz maszynę</button>
+        </form>
+    </div>
+
+    <div ng-show="step === 3">
+        animacja
     </div>
 
 </div>
