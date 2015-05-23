@@ -65,8 +65,15 @@ angular.module('myApp', []).
                 }
 
                 dtmInstance = new DeterministicTuringMachine(machineDef, 100, $scope.inputWord);
+                $scope.tape = dtmInstance.getTape();
                 $scope.step = 3;
             }
         };
 
+        $scope.nextStep = function () {
+            if (!dtmInstance.isInFinishState()) {
+                dtmInstance.nextStep();
+                $scope.tape = dtmInstance.getTape();
+            }
+        };
     }]);

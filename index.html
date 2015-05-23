@@ -57,7 +57,7 @@
             </select>
 
             Wczytywany symbol:
-            <select ng-model="transition.condSymbol"required>
+            <select ng-model="transition.condSymbol" required>
                 <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
             </select><br><br>
 
@@ -79,7 +79,9 @@
             <br><br>
             <button ng-click="addTransition(transitionForm, transition)">Dodaj stan</button>
         </form>
-        <form><button ng-click="createDtm()">Utwórz maszynę</button></form>
+        <form>
+            <button ng-click="createDtm()">Utwórz maszynę</button>
+        </form>
     </div>
 
     <div ng-show="step === 2">
@@ -92,6 +94,12 @@
 
     <div ng-show="step === 3">
         animacja
+        <br>
+        {{tape.join(' ')}}<br><br>
+
+        <form>
+            <button ng-click="nextStep()">Następny krok</button>
+        </form>
     </div>
 
 </div>
