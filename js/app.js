@@ -35,21 +35,38 @@ angular.module('myApp', []).
             }
         };
 
-        $scope.addTransition = function (transition) {
-            machineDef.transitions.push({
-                condition: {state: transition.condState, symbol: transition.condSymbol},
-                action: {state: transition.actionState, symbol: transition.actionSymbol, move: transition.actionMove}
-            })
-            $scope.transition = null;
+        $scope.addTransition = function (form, transition) {
+            if (form.$valid) {
+                machineDef.transitions.push({
+                    condition: {state: transition.condState, symbol: transition.condSymbol},
+                    action: {
+                        state: transition.actionState,
+                        symbol: transition.actionSymbol,
+                        move: transition.actionMove
+                    }
+                })
+                $scope.transition = null;
+            } else {
+                alert("Wszystkie pola są wymagane.");
+            }
         };
 
         $scope.createDtm = function () {
-            $scope.step = 2;
+                $scope.step = 2;
         };
 
-        $scope.runDtm = function () {
-            dtmInstance = new DeterministicTuringMachine(machineDef, 100, $scope.inputWord);
-            $scope.step = 3;
+        $scope.runDtm = function (form) {
+            if (form.$valid) {
+                for (var i=0; i<$scope.inputWord.length; ++i) {
+                    if (machineDef.inputAlphabet.indexOf($scope.inputWord[i]) == -1) {
+                        alert("Symbole słowa wejściowego muszą należeć do alfabetu wejściowego.");
+                        return;
+                    }
+                }
+
+                dtmInstance = new DeterministicTuringMachine(machineDef, 100, $scope.inputWord);
+                $scope.step = 3;
+            }
         };
 
     }]);

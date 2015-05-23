@@ -50,43 +50,43 @@
     <div ng-show="step === 1">
         <h1>Dodaj funkcję przejścia:</h1><br>
 
-        <form>
+        <form name="transitionForm">
             Aktualny stan:
-            <select ng-model="transition.condState">
+            <select ng-model="transition.condState" required>
                 <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
             </select>
 
             Wczytywany symbol:
-            <select ng-model="transition.condSymbol">
+            <select ng-model="transition.condSymbol"required>
                 <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
             </select><br><br>
 
             Nowy stan:
-            <select ng-model="transition.actionState">
+            <select ng-model="transition.actionState" required>
                 <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
             </select>
 
             Wpisywany symbol:
-            <select ng-model="transition.actionSymbol">
+            <select ng-model="transition.actionSymbol" required>
                 <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
             </select>
 
             Ruch:
-            <select ng-model="transition.actionMove">
+            <select ng-model="transition.actionMove" required>
                 <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
             </select>
 
             <br><br>
-            <button ng-click="addTransition(transition)">Dodaj stan</button>
-            <button ng-click="createDtm()">Utwórz maszynę</button>
+            <button ng-click="addTransition(transitionForm, transition)">Dodaj stan</button>
         </form>
+        <form><button ng-click="createDtm()">Utwórz maszynę</button></form>
     </div>
 
     <div ng-show="step === 2">
-        <form>
+        <form name="runForm">
             Słowo wejściowe:<br>
-            <input ng-model="inputWord" type="text"/><br>
-            <button ng-click="runDtm()">Utwórz maszynę</button>
+            <input ng-model="inputWord" type="text" required/><br>
+            <button ng-click="runDtm(runForm)">Uruchom maszynę</button>
         </form>
     </div>
 
