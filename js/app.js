@@ -9,6 +9,21 @@ angular.module('myApp', []).
         var machineDef;
         var dtmInstance;
 
+        var getTapeString = function (dtm) {
+            var tape = dtm.getTape();
+            var headPos = dtm.getHeadPosition();
+            var tapeString = "";
+
+            for (var i = 0; i < tape.length; ++i) {
+                if (i != headPos) {
+                    tapeString = tapeString.concat(tape[i]).concat(" ");
+                } else {
+                    tapeString = tapeString.concat("[").concat(tape[i]).concat("]");
+                }
+            }
+            return tapeString;
+        };
+
         $scope.stateListener = function (states) {
             if (states != undefined) {
                 $scope.states = states.split(/\s*,\s*/);
@@ -52,12 +67,12 @@ angular.module('myApp', []).
         };
 
         $scope.createDtm = function () {
-                $scope.step = 2;
+            $scope.step = 2;
         };
 
         $scope.runDtm = function (form) {
             if (form.$valid) {
-                for (var i=0; i<$scope.inputWord.length; ++i) {
+                for (var i = 0; i < $scope.inputWord.length; ++i) {
                     if (machineDef.inputAlphabet.indexOf($scope.inputWord[i]) == -1) {
                         alert("Symbole słowa wejściowego muszą należeć do alfabetu wejściowego.");
                         return;
@@ -65,7 +80,8 @@ angular.module('myApp', []).
                 }
 
                 dtmInstance = new DeterministicTuringMachine(machineDef, 100, $scope.inputWord);
-                $scope.tape = dtmInstance.getTape();
+                $scope.tape = getTapeString(dtmInstance);
+                $scope.currentState = dtmInstance.getCurrentState();
                 $scope.step = 3;
             }
         };
@@ -73,7 +89,10 @@ angular.module('myApp', []).
         $scope.nextStep = function () {
             if (!dtmInstance.isInFinishState()) {
                 dtmInstance.nextStep();
-                $scope.tape = dtmInstance.getTape();
+                $scope.tape = getTapeString(dtmInstance);
+                $scope.currentState = dtmInstance.getCurrentState();
+            } else {
+                alert("Maszyna jest w stanie akceptującym");
             }
         };
     }]);

@@ -89,6 +89,10 @@ function DeterministicTuringMachine(parameters, tapeLength, inputWord) {
             return currentState;
         },
 
+        getHeadPosition: function() {
+          return head;
+        },
+
         nextStep: function () {
             var action = getAction({state: currentState, symbol: read()});
             if (action == null) {

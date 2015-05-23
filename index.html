@@ -93,9 +93,11 @@
     </div>
 
     <div ng-show="step === 3">
-        animacja
+        <h2>animacja</h2><br>
         <br>
-        {{tape.join(' ')}}<br><br>
+        Słowo wejściowe: {{inputWord}}<br><br>
+        Aktualny stan: {{currentState}}<br><br>
+        {{tape}}<br><br>
 
         <form>
             <button ng-click="nextStep()">Następny krok</button>
