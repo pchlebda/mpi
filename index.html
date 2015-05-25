@@ -9,6 +9,7 @@
     <script src="lib/angular.min.js"></script>
     <script src="js/dtm.js"></script>
     <script src="js/app.js"></script>
+    <link rel="stylesheet" href="css/style.css">
     <script src="lib/jquery-2.1.4.min.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
@@ -25,7 +26,7 @@
 
     <!--Inicjalizacja -->
     <div ng-show="step === 0">
-        <form name="initForm" class="form-horizontal" role="form">
+        <form name="initForm" class="form-horizontal top-margin-form" role="form">
 
             <div class="form-group">
                 <label class="control-label col-md-2 col-md-offset-2">Zbiór stanów:</label>
@@ -91,7 +92,58 @@
 
 
     <div ng-show="step === 1">
-        <h1>Dodaj funkcję przejścia:</h1><br>
+
+        <div class="row">
+            <h1 class="col-md-6 col-md-offset-3">Dodaj funkcję przejścia:</h1>
+        </div>
+
+        <div class="container">
+            <table class="table table-bordered">
+                <thead>
+                <th>Stan</th>
+                <th ng-repeat="symbol in machine.tapeAlphabet">{{symbol}}</th>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="state in machine.states">
+                    <td>{{state}}</td>
+                    <td ng-repeat="symbol in machine.tapeAlphabet">
+
+                        <div class="form-group row">
+
+                            <div class="col-md-4">
+                                <select class="form-control">
+                                    <option selected value="Symbol">Symbol</option>
+                                    <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}
+                                    </option>
+                                </select>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <select class="form-control">
+                                    <option selected value="Ruch">Ruch</option>
+                                    <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4">
+                                <select class="form-control">
+                                    <option selected value="Stan">Stan</option>
+                                    <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+        </div>
+
 
         <form name="transitionForm">
             Aktualny stan:
@@ -127,25 +179,37 @@
         </form>
     </div>
 
+
     <div ng-show="step === 2">
-        <form name="runForm">
-            Słowo wejściowe:<br>
-            <input ng-model="inputWord" type="text" required/><br>
-            <button ng-click="runDtm(runForm)">Uruchom maszynę</button>
-        </form>
+        <div class="top-margin-form">
+            <form name="runForm" class="form-horizontal" role="form">
+                <div class="form-group row">
+                    <label class="control-label col-md-2 col-md-offset-2">Słowo wejściowe:</label>
+
+                    <div class="col-md-4">
+                        <input ng-model="inputWord" type="text" class="form-control" required/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-default col-md-2 col-md-offset-5" ng-click="runDtm(runForm)">Uruchom maszynę</button>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div ng-show="step === 3">
-        <h2>animacja</h2><br>
-        <br>
-        Słowo wejściowe: {{inputWord}}<br><br>
-        Aktualny stan: {{currentState}}<br><br>
-        {{tape}}<br><br>
+</div>
 
-        <form>
-            <button ng-click="nextStep()">Następny krok</button>
-        </form>
-    </div>
+<div ng-show="step === 3">
+    <h2>animacja</h2><br>
+    <br>
+    Słowo wejściowe: {{inputWord}}<br><br>
+    Aktualny stan: {{currentState}}<br><br>
+    {{tape}}<br><br>
+
+    <form>
+        <button ng-click="nextStep()">Następny krok</button>
+    </form>
+</div>
 
 </div>
 
