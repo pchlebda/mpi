@@ -6,6 +6,10 @@ angular.module('myApp', []).
 
         $scope.step = 0;
 
+        $scope.pre = 'a a a a';
+        $scope.hd = 'b';
+        $scope.pst = 'c c c c';
+
         var machineDef;
         var dtmInstance;
 

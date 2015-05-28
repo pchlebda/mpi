@@ -20,13 +20,15 @@
 <body ng-app="myApp">
 
 <div ng-controller="MainController" class="container">
-    <div class="row">
-        <h1 class="col-md-4 col-md-offset-4">Maszyna Turinga</h1>
-    </div>
+<div class="row">
+    <h1 class="col-md-4 col-md-offset-4">Maszyna Turinga</h1>
+</div>
 
-    <!--Inicjalizacja -->
-    <div ng-show="step === 0">
-        <form name="initForm" class="form-horizontal top-margin-form" role="form">
+<!--Inicjalizacja -->
+<div ng-show="step === 0">
+
+    <div style="margin-top: 5%;">
+        <form name="initForm" class="form-horizontal" role="form">
 
             <div class="form-group">
                 <label class="control-label col-md-2 col-md-offset-2">Zbiór stanów:</label>
@@ -82,134 +84,142 @@
             </div>
 
             <div class="form-group">
-                <button class="btn btn-default col-md-2 col-md-offset-5"
-                        ng-click="createTuringMachine(initForm, machine)">Start
+                <button class="btn btn-success col-md-2 col-md-offset-5"
+                        ng-click="createTuringMachine(initForm, machine)">Dalej
                 </button>
             </div>
         </form>
+    </div>
+</div>
 
+
+<div ng-show="step === 1">
+    <div class="row">
+        <h1 class="col-md-6 col-md-offset-3">Dodaj funkcję przejścia:</h1>
     </div>
 
+    <div class="container">
+        <table class="table table-bordered">
+            <thead>
+            <th>Stan</th>
+            <th ng-repeat="symbol in machine.tapeAlphabet">{{symbol}}</th>
+            </thead>
 
-    <div ng-show="step === 1">
+            <tbody>
+            <tr ng-repeat="state in machine.states">
+                <td>{{state}}</td>
+                <td ng-repeat="symbol in machine.tapeAlphabet">
 
-        <div class="row">
-            <h1 class="col-md-6 col-md-offset-3">Dodaj funkcję przejścia:</h1>
-        </div>
+                    <div class="form-group row">
 
-        <div class="container">
-            <table class="table table-bordered">
-                <thead>
-                <th>Stan</th>
-                <th ng-repeat="symbol in machine.tapeAlphabet">{{symbol}}</th>
-                </thead>
-
-                <tbody>
-                <tr ng-repeat="state in machine.states">
-                    <td>{{state}}</td>
-                    <td ng-repeat="symbol in machine.tapeAlphabet">
-
-                        <div class="form-group row">
-
-                            <div class="col-md-4">
-                                <select class="form-control">
-                                    <option selected value="Symbol">Symbol</option>
-                                    <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}
-                                    </option>
-                                </select>
-                            </div>
-
-
-                            <div class="col-md-4">
-                                <select class="form-control">
-                                    <option selected value="Ruch">Ruch</option>
-                                    <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <select class="form-control">
-                                    <option selected value="Stan">Stan</option>
-                                    <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
-                                </select>
-                            </div>
-
-
+                        <div class="col-md-4">
+                            <select class="form-control">
+                                <option selected value="Symbol">Symbol</option>
+                                <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}
+                                </option>
+                            </select>
                         </div>
 
-                    </td>
-                </tr>
-                </tbody>
 
-            </table>
-        </div>
+                        <div class="col-md-4">
+                            <select class="form-control">
+                                <option selected value="Ruch">Ruch</option>
+                                <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
+                            </select>
+                        </div>
 
-
-        <form name="transitionForm">
-            Aktualny stan:
-            <select ng-model="transition.condState" required>
-                <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
-            </select>
-
-            Wczytywany symbol:
-            <select ng-model="transition.condSymbol" required>
-                <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
-            </select><br><br>
-
-            Nowy stan:
-            <select ng-model="transition.actionState" required>
-                <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
-            </select>
-
-            Wpisywany symbol:
-            <select ng-model="transition.actionSymbol" required>
-                <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
-            </select>
-
-            Ruch:
-            <select ng-model="transition.actionMove" required>
-                <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
-            </select>
-
-            <br><br>
-            <button ng-click="addTransition(transitionForm, transition)">Dodaj stan</button>
-        </form>
-        <form>
-            <button ng-click="createDtm()">Utwórz maszynę</button>
-        </form>
-    </div>
+                        <div class="col-md-4">
+                            <select class="form-control">
+                                <option selected value="Stan">Stan</option>
+                                <option ng-repeat="state in machine.states" value="{{state}}">{{state}}</option>
+                            </select>
+                        </div>
 
 
-    <div ng-show="step === 2">
-        <div class="top-margin-form">
-            <form name="runForm" class="form-horizontal" role="form">
-                <div class="form-group row">
-                    <label class="control-label col-md-2 col-md-offset-2">Słowo wejściowe:</label>
-
-                    <div class="col-md-4">
-                        <input ng-model="inputWord" type="text" class="form-control" required/>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-default col-md-2 col-md-offset-5" ng-click="runDtm(runForm)">Uruchom maszynę</button>
-                </div>
-            </form>
-        </div>
+
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
     </div>
 
+
+    <form name="transitionForm">
+        Aktualny stan:
+        <select ng-model="transition.condState" required>
+            <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
+        </select>
+
+        Wczytywany symbol:
+        <select ng-model="transition.condSymbol" required>
+            <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
+        </select><br><br>
+
+        Nowy stan:
+        <select ng-model="transition.actionState" required>
+            <option ng-repeat="state in machine.states track by $index" value="{{state}}">{{state}}</option>
+        </select>
+
+        Wpisywany symbol:
+        <select ng-model="transition.actionSymbol" required>
+            <option ng-repeat="symbol in machine.tapeAlphabet" value="{{symbol}}">{{symbol}}</option>
+        </select>
+
+        Ruch:
+        <select ng-model="transition.actionMove" required>
+            <option ng-repeat="move in machine.moves" value="{{move}}">{{move}}</option>
+        </select>
+
+        <br><br>
+        <button ng-click="addTransition(transitionForm, transition)">Dodaj stan</button>
+    </form>
+    <form>
+        <button ng-click="createDtm()">Utwórz maszynę</button>
+    </form>
+</div>
+
+
+<div ng-show="step === 2">
+    <div>
+        <form name="runForm" class="form-horizontal" role="form">
+            <div class="form-group row">
+                <label class="control-label col-md-2 col-md-offset-2">Słowo wejściowe:</label>
+
+                <div class="col-md-4">
+                    <input ng-model="inputWord" type="text" class="form-control" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-success col-md-2 col-md-offset-5" ng-click="runDtm(runForm)">Uruchom
+                    maszynę
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <div ng-show="step === 3">
-    <h2>animacja</h2><br>
+    <h2 class="col-md-offset-2 col-md-offset-6">Animacja</h2>
     <br>
     Słowo wejściowe: {{inputWord}}<br><br>
     Aktualny stan: {{currentState}}<br><br>
     {{tape}}<br><br>
 
-    <form>
-        <button ng-click="nextStep()">Następny krok</button>
+
+    <form class="form-group">
+        <button class="btn btn-primary col-md-2 col-md-offset-1" ng-click="nextStep()"><span
+                class="glyphicon  glyphicon-step-forward"></span>Następny krok
+        </button>
+        <button class="btn btn-primary col-md-2 col-md-offset-3" ng-click=""><span
+                class="glyphicon  glyphicon-play"></span>Animacja
+        </button>
+        <button class="btn btn-primary col-md-2" ng-click=""><span class="glyphicon  glyphicon-pause"></span>Pauza
+        </button>
     </form>
 </div>
+
 
 </div>
 
