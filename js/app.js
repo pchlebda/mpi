@@ -6,10 +6,6 @@ angular.module('myApp', []).
 
         $scope.step = 0;
 
-        $scope.pre = 'a a a a';
-        $scope.hd = 'b';
-        $scope.pst = 'c c c c';
-
         var machineDef;
         var dtmInstance;
 
@@ -63,12 +59,13 @@ angular.module('myApp', []).
                         symbol: transition.actionSymbol,
                         move: transition.actionMove
                     }
-                })
+                });
                 $scope.transition = null;
             } else {
                 alert("Wszystkie pola są wymagane.");
             }
         };
+
 
         $scope.createDtm = function () {
             $scope.step = 2;
