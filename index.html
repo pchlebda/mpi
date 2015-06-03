@@ -96,7 +96,7 @@
 
     <div ng-show="step === 1">
         <div class="row">
-            <h1>Dodaj funkcję przejścia:</h1>
+            <h1 style="text-align: center;">Dodaj funkcję przejścia:</h1>
         </div>
         <div class="container" style="margin-top: 5%;">
             <table class="table table-bordered">
@@ -109,7 +109,7 @@
                 <th>Opcje</th>
                 </thead>
                 <tbody>
-                <tr>
+                <tr class="transition-row">
                     <form name="transitionForm" role="form">
                         <td>
                             <select class="form-control" ng-model="transition.condState" required>
@@ -148,14 +148,14 @@
                         </td>
                     </form>
                 </tr>
-                <tr ng-repeat="transition in machine.transitions">
+                <tr ng-repeat="transition in machine.transitions track by $index" class="transition-row">
                     <td>{{transition.condition.state}}</td>
                     <td>{{transition.condition.symbol}}</td>
-                    <td>{{transition.action.actionState}}</td>
-                    <td>{{transition.action.actionSymbol}}</td>
-                    <td>{{transition.action.actionMove}}</td>
+                    <td>{{transition.action.state}}</td>
+                    <td>{{transition.action.symbol}}</td>
+                    <td>{{transition.action.move}}</td>
                     <td>
-                        <button class="btn btn-primary"
+                        <button class="btn btn-primary" ng-click="removeTransition($index)"
                                 >
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
@@ -178,7 +178,7 @@
 
 
     <div ng-show="step === 2">
-        <div>
+        <div style="margin-top: 5%;">
             <form name="runForm" class="form-horizontal" role="form">
                 <div class="form-group row">
                     <label class="control-label col-md-2 col-md-offset-2">Słowo wejściowe:</label>
@@ -211,7 +211,8 @@
             <button class="btn btn-primary col-md-2 col-md-offset-3" ng-click=""><span
                     class="glyphicon  glyphicon-play"></span>Animacja
             </button>
-            <button class="btn btn-primary col-md-2" ng-click=""><span class="glyphicon  glyphicon-pause"></span>Pauza
+            <button class="btn btn-primary col-md-2" ng-click=""><span
+                    class="glyphicon  glyphicon-pause"></span>Pauza
             </button>
         </form>
     </div>

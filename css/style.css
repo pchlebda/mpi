@@ -2,6 +2,12 @@
     margin-top: 4%;
 }
 
-.select-margins{
+.select-margins {
     margin-right: 18px;
+}
+
+.transition-row > td {
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
 }

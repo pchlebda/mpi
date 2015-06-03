@@ -66,6 +66,10 @@ angular.module('myApp', []).
             }
         };
 
+        $scope.removeTransition = function (index) {
+            machineDef.transitions.splice(index, 1);
+        };
+
 
         $scope.createDtm = function () {
             $scope.step = 2;
@@ -87,7 +91,11 @@ angular.module('myApp', []).
             }
         };
 
-        $scope.nextStep = function () {
+
+        $scope.nextStep = nextStep;
+
+
+        function nextStep() {
             if (!dtmInstance.isInFinishState()) {
                 dtmInstance.nextStep();
                 $scope.tape = getTapeString(dtmInstance);
@@ -96,4 +104,6 @@ angular.module('myApp', []).
                 alert("Maszyna jest w stanie akceptującym");
             }
         };
+
+
     }]);
