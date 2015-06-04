@@ -11,3 +11,7 @@
     font-size: large;
     font-weight: bold;
 }
+
+.center-text {
+    text-align: center;
+}

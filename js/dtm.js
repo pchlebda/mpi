@@ -89,8 +89,8 @@ function DeterministicTuringMachine(parameters, tapeLength, inputWord) {
             return currentState;
         },
 
-        getHeadPosition: function() {
-          return head;
+        getHeadPosition: function () {
+            return head;
         },
 
         nextStep: function () {

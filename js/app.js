@@ -5,9 +5,15 @@ angular.module('myApp', []).
     controller('MainController', ['$scope', function ($scope) {
 
         $scope.step = 0;
+        $scope.nextStep = nextStep;
+        $scope.startAnimation = startAnimation;
+        $scope.pauseAnimation = pauseAnimation;
 
         var machineDef;
         var dtmInstance;
+        var interval = 2000;
+        var animationActive = false;
+        var funcId;
 
         var getTapeString = function (dtm) {
             var tape = dtm.getTape();
@@ -23,6 +29,49 @@ angular.module('myApp', []).
             }
             return tapeString;
         };
+
+
+        var getHead = function (dtm) {
+            var tape = dtm.getTape();
+            var headPos = dtm.getHeadPosition();
+            return tape[headPos];
+        };
+
+        function getLeftTape(dtm, elementNumber) {
+            var leftTape = [];
+
+            var tape = dtm.getTape();
+            var headPos = dtm.getHeadPosition();
+            var idx = headPos - elementNumber;
+
+            for (idx; idx < 1; ++idx) {
+                leftTape.push('#');
+            }
+
+            for (idx; idx < headPos; ++idx) {
+                leftTape.push(tape[idx]);
+            }
+
+            return leftTape;
+        }
+
+        function getRightTape(dtm, elementNumber) {
+            var rightTape = [];
+
+            var tape = dtm.getTape();
+            var headPos = dtm.getHeadPosition();
+            var tapeLength = tape.length;
+            var addedElements = 0;
+
+            for (var i = headPos + 1; addedElements < elementNumber && i < tapeLength; ++i) {
+                rightTape.push(tape[i]);
+                ++addedElements;
+            }
+            for (addedElements; addedElements < elementNumber; ++addedElements) {
+                rightTape.push('#');
+            }
+            return rightTape;
+        }
 
         $scope.stateListener = function (states) {
             if (states != undefined) {
@@ -87,12 +136,10 @@ angular.module('myApp', []).
                 dtmInstance = new DeterministicTuringMachine(machineDef, 100, $scope.inputWord);
                 $scope.tape = getTapeString(dtmInstance);
                 $scope.currentState = dtmInstance.getCurrentState();
+                drawTuringMachine();
                 $scope.step = 3;
             }
         };
-
-
-        $scope.nextStep = nextStep;
 
 
         function nextStep() {
@@ -100,10 +147,92 @@ angular.module('myApp', []).
                 dtmInstance.nextStep();
                 $scope.tape = getTapeString(dtmInstance);
                 $scope.currentState = dtmInstance.getCurrentState();
+                drawTuringMachine();
             } else {
+                pauseAnimation();
                 alert("Maszyna jest w stanie akceptującym");
             }
+        }
+
+        function startAnimation() {
+            if (!animationActive) {
+                console.log('start animation');
+                funcId = setInterval(nextStep, interval);
+            }
+        }
+
+        function pauseAnimation() {
+            if (animationActive) {
+                console.log('pause animation');
+                clearInterval(funcId);
+            }
+        }
+
+
+        function drawTuringMachine() {
+            var canvas = document.getElementById("turingMachine");
+            var ctx = canvas.getContext("2d");
+            ctx.font = "20px Georgia";
+            var tapeElements = 17;
+            var side = 20;
+
+            var leftTape = getLeftTape(dtmInstance, 8);
+            var rightTape = getRightTape(dtmInstance, 8);
+            var head = getHead(dtmInstance);
+
+            console.log('left ' + leftTape + ' head: ' + head + ' right: ' + rightTape);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawLeftTape(ctx, leftTape);
+            drawHeadMachine(ctx, head);
+            drawRightTape(ctx, rightTape);
+        };
+
+        function drawLeftTape(ctx, leftTape) {
+            var tapeElements = 8;
+            for (i = 0; i < tapeElements; ++i) {
+                drawBlock(ctx, i, leftTape[i]);
+            }
+        }
+
+        function drawRightTape(ctx, rightTape) {
+            var tapeElements = 8;
+            var offset = 9;
+            for (i = 0; i < tapeElements; ++i) {
+                drawBlock(ctx, i + offset, rightTape[i]);
+            }
+        }
+
+        function drawBlock(ctx, index, text) {
+            var side = 20;
+            var offset = getOffset(index);
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(offset, 10, side, side);
+            ctx.fillStyle = 'black';
+            ctx.fillText(text, offset + 5, side + 5);
+        }
+
+        function drawHeadMachine(ctx, head) {
+            drawBlock(ctx, 8, head);
+            ctx.fillStyle = "green";
+            ctx.beginPath();
+            ctx.moveTo(390, 50);
+            ctx.lineTo(400, 35);
+            ctx.lineTo(410, 50);
+            ctx.lineTo(390, 50);
+            ctx.closePath();
+            ctx.fill();
+
+        };
+
+        function getOffset(index) {
+            var side = 20;
+            var blockSpace = 20;
+            var offset = 70;
+            return index * (side + blockSpace) + offset;
         };
 
 
-    }]);
+    }
+
+    ])
+;
