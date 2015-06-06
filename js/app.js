@@ -158,6 +158,7 @@ angular.module('myApp', []).
             if (!animationActive) {
                 console.log('start animation');
                 funcId = setInterval(nextStep, interval);
+                animationActive = true;
             }
         }
 
@@ -165,9 +166,9 @@ angular.module('myApp', []).
             if (animationActive) {
                 console.log('pause animation');
                 clearInterval(funcId);
+                animationActive = false;
             }
         }
-
 
         function drawTuringMachine() {
             var canvas = document.getElementById("turingMachine");
@@ -230,7 +231,6 @@ angular.module('myApp', []).
             var offset = 70;
             return index * (side + blockSpace) + offset;
         };
-
 
     }
 

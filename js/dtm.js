@@ -96,6 +96,7 @@ function DeterministicTuringMachine(parameters, tapeLength, inputWord) {
         nextStep: function () {
             var action = getAction({state: currentState, symbol: read()});
             if (action == null) {
+                alert("Brak zdefiniowanej funkcji przejścia dla stanu " + currentState + " i wczytywanego symbolu " + read() + ".");
                 throw new Error("Not defined transition");
             }
             write(action.symbol);
