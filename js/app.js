@@ -8,6 +8,7 @@ angular.module('myApp', []).
         $scope.nextStep = nextStep;
         $scope.startAnimation = startAnimation;
         $scope.pauseAnimation = pauseAnimation;
+        $scope.createTuringMachineAddingBinaryOne = createTuringMachineAddingBinaryOne;
 
         var machineDef;
         var dtmInstance;
@@ -232,7 +233,28 @@ angular.module('myApp', []).
             return index * (side + blockSpace) + offset;
         };
 
-    }
 
+        function createTuringMachineAddingBinaryOne() {
+
+            var transitions = new Array();
+
+            transitions.push(createTransition('p', '0', 'p', '0', 'R'));
+            transitions.push(createTransition('p', '1', 'p', '1', 'R'));
+            transitions.push(createTransition('p', '_', 'q', '_', 'L'));
+
+            transitions.push(createTransition('q', '0', 'r', '1', '_'));
+            transitions.push(createTransition('q', '1', 'q', '0', 'L'));
+            transitions.push(createTransition('q', '_', 'r', '1', '_'));
+
+            machineDef = {states: ['p', 'q', 'r'], initState: 'p', finiteStates: ['r'],
+                inputAlphabet: ['0', '1'], tapeAlphabet: ['0', '1', '.'], transitions: transitions};
+            $scope.step = 2;
+        }
+
+        function createTransition(conditionState, conditionSymbol, actionState, actionSymbol, move) {
+            return {condition: {state: conditionState, symbol: conditionSymbol}, action: {state: actionState, symbol: actionSymbol, move: move}};
+        }
+
+    }
     ])
 ;
