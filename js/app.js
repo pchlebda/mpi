@@ -9,6 +9,7 @@ angular.module('myApp', []).
         $scope.startAnimation = startAnimation;
         $scope.pauseAnimation = pauseAnimation;
         $scope.createTuringMachineAddingBinaryOne = createTuringMachineAddingBinaryOne;
+        $scope.backToStep = backToStep;
 
         var machineDef;
         var dtmInstance;
@@ -149,15 +150,20 @@ angular.module('myApp', []).
                 $scope.tape = getTapeString(dtmInstance);
                 $scope.currentState = dtmInstance.getCurrentState();
                 drawTuringMachine();
+                displayState();
             } else {
                 pauseAnimation();
                 alert("Maszyna jest w stanie akceptującym");
             }
         }
 
+        function backToStep(index) {
+            $scope.step = index;
+            clearInterval(funcId);
+        }
+
         function startAnimation() {
             if (!animationActive) {
-                console.log('start animation');
                 funcId = setInterval(nextStep, interval);
                 animationActive = true;
             }
@@ -165,7 +171,6 @@ angular.module('myApp', []).
 
         function pauseAnimation() {
             if (animationActive) {
-                console.log('pause animation');
                 clearInterval(funcId);
                 animationActive = false;
             }
@@ -182,7 +187,6 @@ angular.module('myApp', []).
             var rightTape = getRightTape(dtmInstance, 8);
             var head = getHead(dtmInstance);
 
-            console.log('left ' + leftTape + ' head: ' + head + ' right: ' + rightTape);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             drawLeftTape(ctx, leftTape);
             drawHeadMachine(ctx, head);
@@ -253,6 +257,10 @@ angular.module('myApp', []).
 
         function createTransition(conditionState, conditionSymbol, actionState, actionSymbol, move) {
             return {condition: {state: conditionState, symbol: conditionSymbol}, action: {state: actionState, symbol: actionSymbol, move: move}};
+        }
+
+        function displayState() {
+            document.getElementById("currentStateHeader").innerHTML = "Aktualny stan: " + dtmInstance.getCurrentState();
         }
 
     }

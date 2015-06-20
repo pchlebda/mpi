@@ -214,12 +214,18 @@
     <div class="row center-text">
         <h2>Animacja</h2>
     </div>
+    <div class="row">
+        <button class="btn btn-primary col-md-2 col-md-offset-5" ng-click="backToStep(2)">Wróć</button>
+    </div>
+    <div class="row center-text" style="margin-top: 20px;">
+        <button class="btn btn-primary col-md-2 col-md-offset-5" ng-click="backToStep(0)">Zakończ</button>
+    </div>
 
     <div class="row center-text">
-        <h3>Słowo wejściowe: {{inputWord}}</h3>
+        <h3>Słowo wejściowe:{{inputWord}}</h3>
     </div>
     <div class="row center-text">
-        <h3>Aktualny stan: {{currentState}}</h3>
+        <h3 id="currentStateHeader">Aktualny stan:{{currentState}}</h3>
     </div>
 
 
